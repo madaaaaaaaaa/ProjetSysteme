@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>uRAD Superposition</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script></head>
+</head>
+<body>
+    <div id="div_bandeau">
+        <div id="div_connexion_Redis">
+            <div id = "btn_connexion_Redis" class="btn">Connexion à Redis
+                <svg viewbox="0 0 60 60" class= "svg_logo" >
+                    <path d="M 10, 10 10, 50 30, 55 50, 50 50, 10 30, 5 Z" fill="red"/>
+                    <path d="M 10, 10 30, 15 50, 10 30, 5 Z" fill="red"/>
+                </svg>
+            </div>
+            <div style="display:none" id = "btn_connecte_Redis" class="btn" >Connecté
+                <svg viewbox="0 0 60 60" class= "svg_logo">
+                    <path d="M 10, 10 10, 50 30, 55 50, 50 50, 10 30, 5 Z" fill="red"/>
+                    <path d="M 10, 10 30, 15 50, 10 30, 5 Z" fill="red"/>  
+                </svg>
+            </div>
+        </div>
+        <div id="div_afficher_donnees_radars" class="desactive">
+            <div id = "btn_afficher_donnees_radars" class="btn">Afficher les données
+                <svg viewbox="0 0 60 60" class= "svg_logo">
+                    <path d="M 10, 50 20, 30 35, 30 50, 10 35, 30 20, 30 10, 50 Z" stroke-width = "4px"/>
+                    <rect x="20" y="20" width="20" height="20" stroke-width = 3px fill="transparent" stroke="orange" ></rect>
+                    </svg>
+            </div>
+            <div style="display:none" id = "btn_arreter_afficher_donnees_radars" class="btn" >Arrêter d'afficher les données
+                <svg viewbox="0 0 60 60" class= "svg_logo">
+                    <path d="M 15, 10 15, 50 25, 50 25, 10 15, 10 M 35, 10 35, 50 45, 50 45, 10 35, 10 Z" 
+                    fill="blue"  />
+                </svg>
+            </div>
+        </div>
+
+        <div id="div_placer_radars" class="desactive">
+            <div id = "btn_placer_radars" class="btn">Enregistrer les positions des radars
+                <svg viewbox="0 0 60 60" class= "svg_logo" >
+                    <path d="M 20, 10  40,10 40,30 50,30 30,50 10,30 20, 30Z" fill="green"  />
+                    </svg>
+            </div>
+            <div style="display:none" id = "btn_replacer_radars" class="btn">Replacer les radars
+                <svg viewbox="0 0 60 60" class= "svg_logo">
+                    <circle cx="30" cy="30" r="20" fill="red" ></circle>
+                    <circle cx="30" cy="30" r="15   " fill="white" ></circle>
+                    <circle cx="30" cy="30" r="5" fill="red" ></circle>
+                </svg>
+            </div>
+        </div>
+
+        <div id="div_enregistrement" class="desactive">
+            <div id="btn_charger_video" class="btn">
+                <svg viewbox="0 0 60 60" class= "svg_logo" >
+                    <path d="M 10,15 10,45 40,45 40,32 50,40 50,20 40,28 40,15 Z" fill="black"  />
+                </svg>
+            </div>
+            <div style="display:none" id="btn_enregistrement" class="btn">
+                <svg viewbox="0 0 60 60" class= "svg_logo"  >
+                    <circle cx="30" cy="30" r="20" fill="red" ></circle>
+                </svg>
+            </div>
+            <div style="display:none" id="btn_arret_enregistrement" class="btn" >
+                <svg viewbox="0 0 60 60" class= "svg_logo"  >
+                    <rect x="10" y="10" width="40" height="40" fill="red" ></rect>
+                </svg>
+            </div>
+        </div>
+
+        <div id="div_dessiner_rectangle_max" class="desactive">
+            <div id = "btn_dessiner_rectangle_max" class="btn">max
+                <svg viewbox="0 0 60 60" class= "svg_logo" >
+                    <path d="M 15, 10  15, 50 40, 50 40, 10 15, 10 Z" fill="darkorange"/>
+                    <path d="M 40, 18 32, 18Z"/>
+                    <path d="M 40, 26 32, 26Z"/>
+                    <path d="M 40, 34 32, 34Z"/>
+                    <path d="M 40, 42 32, 42Z"/>
+                    <path d="M 40, 50 32, 50Z"/>
+                    </svg>
+            </div>
+        </div>
+
+        <div id="div_dessiner_rectangle_min" class="desactive">
+            <div id = "btn_dessiner_rectangle_min" class="btn">min
+                <svg viewbox="0 0 60 60" class= "svg_logo" >
+                    <path d="M 15, 10  15, 50 40, 50 40, 10 15, 10 Z" fill="orange"/>
+                    <path d="M 40, 18 32, 18Z"/>
+                    <path d="M 40, 26 32, 26Z"/>
+                    <path d="M 40, 34 32, 34Z"/>
+                    <path d="M 40, 42 32, 42Z"/>
+                    <path d="M 40, 50 32, 50Z"/>
+                    </svg>
+            </div>
+        </div>
+
+        <div id="div_radars"  ondragover="event.preventDefault()">
+            <div id="div_info_glisser_deposer">Charger la vidéo...</div>
+            <div id="dropzone_radars">
+                <div class="Ard1 radar" id="Ard"  draggable="true"></div>
+                <div class="RPi11 radar" id="RPi_1" draggable="true"></div>
+                <div class="RPi21 radar" id="RPi_2" draggable="true"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="div_central">
+        <div id="div_gauche">
+            <div id="div_sous_bandeau">
+                <div class="div_selection" id="mode_mesures">Mesures</div>
+                <div class="div_non_selection" id="mode_Ard">Arduino
+                    <div class ="Ard2"></div>
+                </div>
+                <div class="div_non_selection" id="mode_RPi_1">RaspberryPi 1
+                    <div class ="RPi12"></div>
+                </div>
+                <div  class="div_non_selection" id="mode_RPi_2">RaspberryPi 2
+                    <div class ="RPi22"></div>
+                </div>
+            </div>  
+            <div style="display:none" id="div_sous_sous_bandeau">
+                <div class="div_non_selection" id="sous_mode_FFT" >FFT</div>
+                <div class="div_non_selection" id="sous_mode_droites" >Associations</div>
+            </div>
+            <div style="display:none" id="div_reglages_affichage_FFT">
+                <select class="select_reglages" id="select_echantillons_frequences">
+                    <option value="echantillons">Echantillons</option>
+                    <option value="frequences">Fréquences</option>
+                </select>
+                <select class="select_reglages"  id="select_FFT">
+                    <!-- <option value="triangle">FFT triangle (mode 3)</option> -->
+                    <option value="triangle1">FFT triangle 1 (mode 4)</option>
+                    <option value="triangle2">FFT triangle 2 (mode 4)</option>
+                </select>
+            </div>
+            <div id="div_superposition_graphe">
+                <div id = "div_afficher_donnees_radars_graphe" class ="desactive">
+                    <div id = "btn_afficher_donnees_radars_graphe" class="btn">
+                        <svg viewbox="0 0 60 60" class= "svg_logo_gros">
+                            <path d="M 10, 50 20, 30 35, 30 50, 10 35, 30 20, 30 10, 50 Z" stroke-width = "4px"/>
+                            <rect x="20" y="20" width="20" height="20" stroke-width = 3px fill="transparent" stroke="orange" ></rect>
+                            </svg>
+                    </div>
+                </div> 
+                <div id="div_graphe"></div>
+            </div>
+        </div>
+        <div id="div_droit">
+            <div id="div_charger_video_canvas" class ="desactive">
+                <div id="btn_charger_video_canvas" class="btn">
+                    <svg viewbox="0 0 60 60" class= "svg_logo_gros" >
+                        <path d="M 10,15 10,45 40,45 40,32 50,40 50,20 40,28 40,15 Z" fill="black"  />
+                    </svg>
+                </div>
+            </div>
+            <div id="div_video" ondragover="event.preventDefault()"> 
+                <canvas id="canvas_video"></canvas>
+                <img id="img">
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="/static/script_video.js"></script>
+<script type="text/javascript" src="/static/script_graphe.js"></script>
+<script>
+
+    div_charger_video_canvas.addEventListener("click", charger_video)   
+    div_enregistrement.addEventListener("click", charger_video)  
+
+    function charger_video(){
+        img.src = "{{url_for('flux_video')}}"
+        div_charger_video_canvas.classList.add("desactive")
+        div_enregistrement.classList.add("desactive")
+        img.onload = function(){
+            largeur_originelle = img.width
+            hauteur_originelle = img.height
+            canvas_video.style.width = img.style.width
+            canvas_video.style.height = img.style.height
+            canvas_video.width = img.width
+            canvas_video.height = img.height
+            ctx_canvas_video = canvas_video.getContext("2d")
+            btn_enregistrement.style.display = "none" ? "" : "none"
+            btn_charger_video.style.display = "none"
+            div_charger_video_canvas.style.display = "none"
+            div_charger_video_canvas.classList.remove("desactive")
+            div_enregistrement.classList.remove("desactive")
+            div_placer_radars.classList.remove("desactive")
+            div_dessiner_rectangle_max.classList.remove("desactive")
+            div_dessiner_rectangle_min.classList.remove("desactive")
+            div_radars.classList.add("ajouter_hover")
+            if (!radars_places){
+                div_info_glisser_deposer.innerHTML = "Glisser-déposer les radars"
+            }
+            div_enregistrement.removeEventListener("click", charger_video)
+            div_enregistrement.addEventListener("click", enregistrer)
+            }
+        }
+
+        
+    let radars_places = false
+    let aff_donnees = false
+    let enregistrement = false
+
+    //PARTIE MODES - REGLAGES - CONFIG//
+    
+    let style_div_sous_sous_bandeau = div_sous_sous_bandeau.style
+
+    mode_mesures.nom = "mode_mesures"
+    mode_Ard.nom = "mode_Ard"
+    mode_RPi_1.nom= "mode_RPi_1"
+    mode_RPi_2.nom= "mode_RPi_2"
+    mode_mesures.nom_affichage = "Mesures distance/vitesse"
+    mode_Ard.nom_affichage = "Réglages - Arduino"
+    mode_RPi_1.nom_affichage = "Réglages - RaspberryPi 1"
+    mode_RPi_2.nom_affichage = "Réglages - RaspberryPi 2"
+    mode_Ard.nom_radar = "Ard"
+    mode_RPi_1.nom_radar = "RPi_1"
+    mode_RPi_2.nom_radar = "RPi_2"
+
+    let liste_modes = [mode_mesures, mode_Ard, 
+        mode_RPi_1, mode_RPi_2]
+    
+    let liste_sous_modes = [sous_mode_FFT, sous_mode_droites]
+
+    sous_mode_FFT.div = div_superposition_graphe
+    sous_mode_droites.div = div_superposition_graphe
+
+    let mode_selectionne = mode_mesures
+
+    for (let mode of liste_modes){
+        mode.sous_mode_selectionne = sous_mode_FFT
+    }
+
+    for (let mode of liste_modes){
+        mode.addEventListener("click", function(){
+            supprimer_graphe(div_graphe)
+            if (!aff_donnees){
+                div_afficher_donnees_radars_graphe.style.display = "none" ? "" : "none"
+            }
+            else {
+                div_afficher_donnees_radars_graphe.style.display = "none"
+            }
+            mode_selectionne = mode
+            mode.sous_mode_selectionne.setAttribute("class", "div_selection")
+            mode.sous_mode_selectionne.div.style.display = "none" ? "" : "none"
+            for (let sous_mode of liste_sous_modes){
+                    if (sous_mode != mode.sous_mode_selectionne){
+                        sous_mode.setAttribute("class", "div_non_selection")
+                    }
+                    if (sous_mode.div!= mode.sous_mode_selectionne.div){
+                        sous_mode.div.style.display = "none"
+                    }
+                }
+            if (mode!=mode_mesures){
+                div_sous_sous_bandeau.style.display = "none" ? "" : "none"
+                if (mode.sous_mode_selectionne == sous_mode_FFT && aff_donnees){
+                    div_reglages_affichage_FFT.style.display =  "none" ? "" : "none"
+                }
+                else {
+                    div_reglages_affichage_FFT.style.display =  "none"
+                }
+            }
+            else{
+                div_sous_sous_bandeau.style.display = "none"
+                div_reglages_affichage_FFT.style.display =  "none"
+
+            }
+            mode.setAttribute("class", "div_selection")
+            for (let autre_mode of liste_modes){
+                if (autre_mode!= mode){
+                    autre_mode.setAttribute("class", "div_non_selection")
+                }
+
+            }
+        })
+    }
+
+    for (let sous_mode of liste_sous_modes){
+        sous_mode.addEventListener("click", function(){
+            supprimer_graphe(div_graphe)
+            if (!aff_donnees){
+                div_afficher_donnees_radars_graphe.style.display = "none" ? "" : "none"
+            }
+            else {
+                div_afficher_donnees_radars_graphe.style.display = "none"
+            }
+            mode_selectionne.sous_mode_selectionne = sous_mode
+            sous_mode.setAttribute("class", "div_selection")
+            sous_mode.div.style.display = "none" ? "" : "none"
+            if (sous_mode == sous_mode_FFT && aff_donnees){
+                div_reglages_affichage_FFT.style.display = "none" ? "" : "none"
+            }
+            else {
+                div_reglages_affichage_FFT.style.display =  "none"
+            }
+            for (let autre_sous_mode of liste_sous_modes){
+                if (autre_sous_mode!= sous_mode){
+                    autre_sous_mode.setAttribute("class", "div_non_selection")
+                }
+                if (autre_sous_mode.div!= sous_mode.div){
+                    autre_sous_mode.div.style.display = "none"
+                }
+            }
+        })
+    }
+
+    //FIN PARTIE MODES - REGLAGES - CONFIG//
+
+    //PARTIE REQUETES - RECUPERATION ET ENVOI DES DONNEES//
+
+    div_connexion_Redis.addEventListener("click", function(){
+        fetch("/connexionRedis", {
+                method : "GET",
+                })
+            .then(
+                res => res.json())
+            .then(json => {
+                if (json=="connecte"){
+                    btn_connecte_Redis.style.display = "none" ? "" : "none"
+                    btn_connecte_Redis.classList.add("desactive")
+                    btn_connexion_Redis.style.display = "none"
+                    div_afficher_donnees_radars.classList.remove("desactive")
+                    div_afficher_donnees_radars_graphe.classList.remove("desactive")
+                    div_charger_video_canvas.classList.remove("desactive")
+                    div_enregistrement.classList.remove("desactive")
+                    }    
+                }
+            )
+        })
+
+    //DEBUT AFFICHAGE DONNEES
+
+    div_afficher_donnees_radars.addEventListener("click", function(){
+        afficher_donnees_radars()
+        div_afficher_donnees_radars_graphe.style.display = "none"})
+
+    div_afficher_donnees_radars_graphe.addEventListener("click", function(){
+        afficher_donnees_radars()
+        div_afficher_donnees_radars_graphe.style.display = "none"})
+
+
+    function afficher_donnees_radars(){
+        if (!aff_donnees){
+            if (mode_selectionne.sous_mode_selectionne == sous_mode_FFT && mode_selectionne != mode_mesures){
+                div_reglages_affichage_FFT.style.display = "none" ? "" : "none"
+            }
+            aff_donnees = true
+            afficher_donnees()
+            btn_afficher_donnees_radars.style.display = "none"
+            btn_arreter_afficher_donnees_radars.style.display = "none" ? "" : "none"
+        }
+        else{
+            aff_donnees = false
+        }
+    }
+
+    function callback(){
+        if (!aff_donnees){
+            setTimeout(function(){
+                if (mode_selectionne.sous_mode_selectionne == sous_mode_FFT && mode_selectionne != mode_mesures){
+                div_reglages_affichage_FFT.style.display = "none"
+            }
+                div_afficher_donnees_radars_graphe.style.display = "none" ? "" : "none"
+                btn_arreter_afficher_donnees_radars.style.display = "none"
+                btn_afficher_donnees_radars.style.display = "none" ? "" : "none"
+                supprimer_graphe(div_graphe)
+            }, 1)
+        }
+    }
+
+    function afficher_donnees() {
+        if (aff_donnees){
+            fetch("/recuperer_mesures",
+                {
+                method :"GET"
+                }
+            )
+            .then(res => res.json())
+            .then(resultats_dsp => { 
+                setTimeout(() => {
+                    if (mode_selectionne!= mode_mesures && mode_selectionne.nom_radar 
+                            in resultats_dsp && mode_selectionne.sous_mode_selectionne == 
+                            sous_mode_FFT)
+                        {
+                        tracer_FFT(resultats_dsp[mode_selectionne.nom_radar]["FFT"], 
+                            select_FFT.value, select_echantillons_frequences.value, callback)
+                    }   
+                    else if (mode_selectionne!= mode_mesures && 
+                            mode_selectionne.nom_radar in resultats_dsp && 
+                            mode_selectionne.sous_mode_selectionne == sous_mode_droites)
+                        {
+                        tracer_droites(resultats_dsp[mode_selectionne.nom_radar]["associations"], callback)
+                    }   
+                    else if (mode_selectionne == mode_mesures){
+                        tracer_points(resultats_dsp, callback)
+                    }      
+                    afficher_donnees()}, 1)
+                }
+            )
+        }
+    }
+
+    //FIN AFFICHAGE DONNEES
+
+    //DEBUT RECUPERATION DONNEES
+
+    function envoyer_rectangle_limite(url){
+        let rapport_largeurs = largeur_originelle/img.width
+        let rapport_hauteurs = hauteur_originelle/img.height
+        let body = {};
+        body["rectangle_limite"] = {"x1" : Math.trunc(x1*rapport_largeurs), "y1" : Math.trunc(y1*rapport_hauteurs), 
+            "x2" : Math.trunc(x2*rapport_largeurs), "y2" : Math.trunc(y2*rapport_hauteurs)}
+        fetch(url, {
+            method : "POST",
+            body : JSON.stringify(body)
+        })
+    }
+
+    div_placer_radars.addEventListener("click", function(){
+        envoyer_positions_radars()
+    })
+
+    function envoyer_positions_radars(){
+        if (!radars_places){
+            let rapport_largeurs = largeur_originelle/img.width
+            let rapport_hauteurs = hauteur_originelle/img.height
+            radars_places = true
+            canvas_video.removeEventListener("mousemove", dessiner_vecteur_mouvement)
+            canvas_video.removeEventListener("click", placer_vecteur)
+            btn_replacer_radars.style.display = "none" ? "" : "none"
+            btn_placer_radars.style.display = "none"
+            let body = {"Ard" : {}, "RPi_1" : {}, "RPi_2" : {}};
+            for (let radar of liste_radars){
+                if (radar.vecteur != null && radar.distance_vecteur != null){
+                    vecteur_unitaire = {
+                        "x" : Math.trunc(rapport_largeurs * 
+                            radar.vecteur["x"]/radar.distance_vecteur),
+                        "y" : Math.trunc(rapport_hauteurs * 
+                            radar.vecteur["y"]/radar.distance_vecteur)}
+                    body[radar.nom]["point_radar"] = {
+                            "x" : radar.point_radar["x"]*rapport_largeurs,
+                            "y" : radar.point_radar["y"]*rapport_hauteurs
+                        }
+                    body[radar.nom]["vecteur_unitaire"] = vecteur_unitaire
+                }
+            }
+            fetch("/recuperer_positions_radars", {
+                        method : "POST",
+                        body : JSON.stringify(body)
+                })
+            if (typeof ctx_canvas_video!="undefined"){
+                ctx_canvas_video.clearRect(0, 0, canvas_video.width, canvas_video.height)
+            }
+            for (let radar of liste_radars){
+                radar.style = "none"
+                radar.classList.remove("radar")
+                dropzone_radars.appendChild(radar)
+                if (radar.div_distance_vecteur!=null){
+                    div_video.removeChild(radar.div_distance_vecteur)
+                    radar.div_distance_vecteur = null
+                }
+            }
+            recup_donnees = true
+            div_info_glisser_deposer.innerHTML = "Données actualisées..."
+            div_radars.classList.remove("ajouter_hover")
+        }
+        else {
+            radars_places = false
+            for (let radar of liste_radars){
+                radar.vecteur = null
+                radar.distance_vecteur = null
+            } 
+            btn_placer_radars.style = "none" ? "" : "none"
+            btn_replacer_radars.style.display = "none"
+            div_info_glisser_deposer.innerHTML = "Glisser-déposer les radars"
+            for (let radar of liste_radars){
+                radar.classList.add("radar")
+            }
+            div_radars.classList.add("ajouter_hover")
+        }
+    }
+
+    //FIN RECUPERATION DONNEES
+
+    function enregistrer(){
+        if (!enregistrement){
+            btn_arret_enregistrement.style.display = "none" ? "" : "none"
+            btn_enregistrement.style.display = "none"
+            fetch("/debuter_enregistrement", {
+                method : "GET",
+            })
+            enregistrement = true
+        }
+        else {
+            btn_enregistrement.style.display = "none" ? "" : "none"
+            btn_arret_enregistrement.style.display = "none"
+            
+            enregistrement = false
+            fetch("/arreter_enregistrement", {
+                method : "GET",
+            }).then(()=>window.open("/lire_capture"))
+        }   
+    }
+    //FIN PARTIE REQUETES - RECUPERATION ET ENVOI DES DONNEES//
+
+    </script>
+</html>

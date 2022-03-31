@@ -1,0 +1,357 @@
+html {
+    height : 100%;
+    width : 100%;
+    font-family: "Cambria", serif;
+}
+
+body{
+    margin : 0;
+    height : 100%;
+    width : 100%;
+    display : flex;
+    flex-direction : column;
+}
+
+div{
+    -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+      
+}
+
+#div_central{
+    display : flex;
+    flex-grow :1;
+    overflow: hidden;
+}
+
+#div_bandeau{
+    z-index : 10;   
+    display : flex;
+    align-items: center;
+    box-shadow: 0 0.125rem 0.25rem 0 rgb(0 0 0 / 20%);
+    padding: 0.2rem;
+    
+}
+
+#div_bandeau > *{
+    margin : 0rem 1rem 0rem 1rem;
+} 
+
+[hidden]{
+    display:none !important;
+}
+
+/* PARTIE DROITE - VIDEO */
+#div_droit{
+    position : relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+#div_dessiner_rectangle_max{
+    margin-left: auto;
+}
+
+#div_radars{
+    border-radius : 2px;
+    width : 14rem;
+    position : relative;
+}
+
+.Ard1{
+    background: url("/static/image_uRAD_Ard.png");
+    background-size: contain;
+    background-position:left;
+    background-repeat:no-repeat;
+    width : 4rem ;
+    height : 2rem;
+    
+}
+
+.RPi11{
+    background: url("/static/image_uRAD_RPi_1.png");
+    background-size: contain;
+    background-position:left;
+    background-repeat:no-repeat;
+    width : 4rem ;
+    height : 2rem;
+    
+}
+
+
+.RPi21{
+    background: url("/static/image_uRAD_RPi_2.png");
+    background-size: contain;
+    background-position:left;
+    background-repeat:no-repeat;
+    width : 4rem ;
+    height : 2rem;
+    
+}
+
+#dropzone_radars{
+    height : 100%;
+    width : 100%;
+    display : flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#div_info_glisser_deposer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position:absolute;
+    height : 100%;
+    width : 100%;
+    background-color: white;
+    opacity : 0.5;
+    z-index: 20;
+}
+
+
+.ajouter_hover:hover>#div_info_glisser_deposer{
+    z-index : 0;
+    color : transparent;
+    opacity : 0.2;
+}
+
+#div_charger_video_canvas{
+    position: absolute;
+    z-index : 40;
+}
+
+#div_video{
+    padding : 0;
+    margin : 0 auto;
+    display : block;
+    flex-grow : 1;
+    flex-shrink : 1;
+    position : relative;  
+} 
+
+#div_video>*{
+    margin: 0 auto;
+}
+
+#div_video>canvas{
+    left : 0;
+    position : absolute;
+    z-index : 10;
+}
+
+#div_video>img{
+    z-index : 0;
+}
+
+.div_distance_vecteur>input[type=number]{
+    width : 4rem;
+    text-align:end;
+    font-family: "Cambria", serif;
+    font-size : 0.8rem;
+}
+
+button:hover:enabled{
+    cursor:pointer;
+}
+
+.desactive{
+    pointer-events: none;
+    opacity:0.7;
+}
+.radar{
+    border : none;
+    cursor: pointer;
+    margin : 0;
+    z-index : 10;
+}
+
+.radar:hover{
+    transform:scale(1.05,1.05);
+    -webkit-transform:scale(1.05,1.05);
+    -moz-transform:scale(1.05,1.05);
+}
+
+.btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.btn:hover>*{
+    transform:scale(1.1,1.1);
+    -webkit-transform:scale(1.1,1.1);
+    -moz-transform:scale(1.1,1.1);
+}
+
+.btn:hover{
+    cursor :  pointer !important;
+}
+
+.svg_logo{
+    stroke : black;
+    stroke-linejoin : round ;
+    stroke-linecap: round;
+    height : 1.8rem;
+}
+
+.svg_logo_gros{
+    stroke : black;
+    stroke-linejoin : round ;
+    stroke-linecap: round;
+    height : 3rem;
+}
+
+/* PARTIE GAUCHE - REGLAGES/GRAPHE */
+
+#div_gauche{
+    height : 100%;
+    display : flex;
+    flex-direction: column;
+}
+
+#div_sous_bandeau{
+    width : 100%;
+    display : flex;
+    align-items: center;
+    overflow-x : auto;
+    box-shadow: 0 0.125rem 0.25rem 0 rgb(0 0 0 / 10%);
+    z-index :10;
+}
+
+#div_sous_bandeau > *{
+    cursor : pointer;
+    height : 1.5rem;
+    padding : 0.4rem;
+} 
+
+.Ard2{
+    background: url("/static/image_uRAD_Ard.png");
+    background-size: contain;
+    background-position:left;
+    background-repeat:no-repeat;
+    width : 2.8rem ;
+    height : 1.5rem;
+    
+}
+
+.RPi12{
+    background: url("/static/image_uRAD_RPi_1.png");
+    background-size: contain;
+    background-position:left;
+    background-repeat:no-repeat;
+    width : 3rem ;
+    height : 1.5rem;
+}
+
+.RPi22{
+    background: url("/static/image_uRAD_RPi_2.png");
+    background-size: contain;
+    background-position:left;
+    background-repeat:no-repeat;
+    width : 3rem ;
+    height : 1.5rem;
+}
+
+#div_sous_sous_bandeau{
+    width : 100%;
+    display : flex;
+    align-items: center;
+    overflow-x : auto;
+    box-shadow: 0 0.125rem 0.25rem 0 rgb(0 0 0 / 5%);
+    z-index :10;
+}
+
+#div_sous_sous_bandeau>*{
+    cursor : pointer;
+    font-size: 0.8rem;
+    padding : 0.4rem;
+}
+
+.div_non_selection:hover{
+    background-color: rgb(207, 236, 238);
+}
+
+.div_non_selection:hover>*{
+    transform:scale(1.1,1.1);
+    -webkit-transform:scale(1.1,1.1);
+    -moz-transform:scale(1.1,1.1);
+}
+
+.div_non_selection{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.div_selection{
+    background-color: darkorange;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.div_selection:hover>*{
+    transform:scale(1.1,1.1);
+    -webkit-transform:scale(1.1,1.1);
+    -moz-transform:scale(1.1,1.1);
+}
+
+#div_superposition_graphe{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow : 1;
+    align-items: center;
+    justify-content: center;
+    position: relative;    
+}
+
+
+.select_reglages{
+    font-size: 0.8rem;
+    font-family: "Cambria", serif;
+    cursor : pointer;
+}
+
+
+#div_reglages_affichage_FFT>*{
+    margin : 0.5rem 0.5rem 0.5rem 0.5rem;
+}
+
+#div_svg_jouer_graphe{
+    position: absolute;
+}
+
+#div_graphe{
+    width : 100%;
+    height :100%;
+}
+
+#div_afficher_donnees_radars_graphe{
+    position : absolute;
+}
+
+
+
+
+
+

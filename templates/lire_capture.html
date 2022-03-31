@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>uRAD Superposition</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script></head>
+</head>
+<body>
+    <div id="div_central">
+        <div id="div_gauche">
+            <div id="div_graphe"></div>
+        </div>
+        <div id="div_droit">
+            <img id = "img">
+        </div>
+    </div>
+</body>
+<script>
+    let width  = 500
+    let fps = 20
+    let intervalle = (1/fps)*1000
+    div_graphe.frame = 0
+    fetch("/obtenir_nbr_frames", {
+        method : "GET",
+    })
+    .then(res => res.json())
+    .then(nbr_frames => {
+        div_graphe.nbr_frames = nbr_frames
+        fetch("/obtenir_mesures", {
+                method : "GET",
+        })
+        .then(res => res.json())
+        .then(mesures => {
+            img.src = "{{url_for('flux_capture')}}"
+            div_graphe.mesures = mesures
+            id = setInterval(tracer_graphe, intervalle)
+            }
+        )
+    })
+
+    function tracer_graphe(){
+        let data  = new Array()
+        for (let nom_radar of ["Ard", "RPi_1", "RPi_2"]){
+            let x = new Array()
+            let y = new Array()
+            let text = new Array()
+            let color
+            if (nom_radar == "Ard"){
+                color = "#00ff00"
+            }
+            else if (nom_radar == "RPi_1"){
+                color = "blue"
+            }
+            else if (nom_radar == "RPi_2"){
+                color = "red"
+            }   
+            for (let mesure of div_graphe.mesures){
+                if (mesure["frame"] < div_graphe.frame && mesure["radar"] == nom_radar){
+                    x.push(mesure["point"]["x"])
+                    y.push(mesure["point"]["y"])  
+                    text.push(mesure["t"]+"s" + " " + mesure["d"] + "m" + " " + mesure["v"]+"m/s")
+                }  
+            }
+            let plot
+            if (x.length!=0 && y.length!=0){
+                plot = {x : x, y : y, mode:"markers", type : "scattergl", hoverinfo : "text", text : text,
+                    marker : {size : 7, color : color, line : {color : "black", width : 1}}, name : nom_radar}
+            }
+            else {
+                plot = {x : [null], y : [null], mode:"markers", type : "scattergl", 
+                    marker : {size : 7, color : color, line : {color : "black", width : 1}},  name : nom_radar}
+            }
+            data.push(plot)
+        }
+        let layout = {
+            title : {text : "Mesures"},
+            autorange : false, width : width, height : width*(img.height/img.width),
+            yaxis : {range : [img.height, 0], dtick : 50, fixedrange : true, title : {text : "pixels Y"}},
+            xaxis : {range : [0, img.width], dtick : 50, fixedrange : true, title : {text : "pixels X"}},
+            showlegend:true,
+            margin: {
+                l: 80,
+                r: 80,
+                b: 80,
+                t: 60,
+                pad: 5
+                }, 
+            }
+        Plotly.react(div_graphe, data, layout, {responsive : true, displayModeBar : false})
+        div_graphe.frame++
+        if (div_graphe.frame == div_graphe.nbr_frames){
+            clearInterval(id)
+        }
+    }
+</script>
+
+
